@@ -1463,7 +1463,9 @@ const ControlButton = class ControlButton {
             icon_size: icon_size,
         });
 
-        if (icon == 'turtle') this.icon.gicon = getCustomIcon(this.icon.icon_name);
+        if (icon == 'turtle') {
+            this.icon.gicon = getCustomIcon(this.icon.icon_name);
+        }
 
         this.actor = new St.Button({
             style_class: 'modal-dialog-button button',
@@ -1481,7 +1483,9 @@ const ControlButton = class ControlButton {
 
     setIcon(icon) {
         this.icon.icon_name = icon + "-symbolic";
-        if (icon == 'turtle') this.icon.gicon = getCustomIcon(this.icon.icon_name);
+        if (icon == 'turtle') {
+            this.icon.gicon = getCustomIcon(this.icon.icon_name);
+        }
     }
 };
 
