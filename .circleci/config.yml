@@ -1,22 +1,9 @@
-version: 2
+version: 2.1
+
+orbs:
+  linter: thekevjames/linter@0
 
 jobs:
-  lint:
-    docker:
-      - image: python:3.7.4
-    steps:
-      - checkout
-      - run: pip install pre-commit
-      - restore_cache:
-          keys:
-            - cache-pre-commit-{{ checksum ".pre-commit-config.yaml" }}
-      - run: pre-commit install-hooks
-      - save_cache:
-          key: cache-pre-commit-{{ checksum ".pre-commit-config.yaml" }}
-          paths:
-            - ~/.cache/pre-commit
-      - run: pre-commit run --all-files
-
   build:
     docker:
       - image: debian:jessie
@@ -27,8 +14,8 @@ jobs:
       - run: make build
 
 workflows:
-  version: 2
   run-jobs:
     jobs:
-      - lint
+      - linter/pre-commit:
+          python_version: 3.7.4
       - build
