@@ -13,7 +13,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 **/
 
-'use strict';  /* jshint -W097 */
+'use strict';/* jshint -W097 */
 
 const Clutter = imports.gi.Clutter;
 const Gio = imports.gi.Gio;
@@ -119,7 +119,7 @@ if (Soup.Session.prototype.add_feature !== null) {
     Soup.Session.prototype.add_feature.call(_httpSession, new Soup.ProxyResolverDefault());
 }
 
-const TransmissionDaemonMonitor = class TransmissionDaemonMonitor {
+class TransmissionDaemonMonitor {
     constructor() {
         this._url = '';
         this._session_id = false;
@@ -400,11 +400,9 @@ const TransmissionDaemonMonitor = class TransmissionDaemonMonitor {
             Mainloop.source_remove(this._timers[source]);
         }
     }
-};
+}
 
-const TransmissionDaemonIndicator = GObject.registerClass(
-    class TransmissionDaemonIndicator extends PanelMenu.Button {
-
+class TransmissionDaemonIndicator extends PanelMenu.Button {
     _init(params) {
         super._init(0.0, 'transmission-daemon');
 
@@ -805,9 +803,11 @@ const TransmissionDaemonIndicator = GObject.registerClass(
     toString() {
         return '[object TransmissionDaemonIndicator]';
     }
-});
+}
 
-const TransmissionTorrentSmall = class TransmissionTorrentSmall extends PopupMenu.PopupBaseMenuItem {
+GObject.registerClass(TransmissionDaemonIndicator);
+
+class TransmissionTorrentSmall extends PopupMenu.PopupBaseMenuItem {
     constructor(params) {
         super({
             reactive: false,
@@ -876,9 +876,9 @@ const TransmissionTorrentSmall = class TransmissionTorrentSmall extends PopupMen
     show() {
         this.actor.show();
     }
-};
+}
 
-const TransmissionTorrent = class TransmissionTorrent extends PopupMenu.PopupMenuSection {
+class TransmissionTorrent extends PopupMenu.PopupMenuSection {
     constructor(params) {
         super();
 
@@ -1173,11 +1173,11 @@ const TransmissionTorrent = class TransmissionTorrent extends PopupMenu.PopupMen
         this._size_info.destroy();
         super.destroy();
     }
-};
+}
 
 const TorrentDisplayClasses = [TransmissionTorrent, TransmissionTorrentSmall, ];
 
-const TorrentName = class TorrentName extends PopupMenu.PopupBaseMenuItem {
+class TorrentName extends PopupMenu.PopupBaseMenuItem {
     constructor(params) {
         super({
             reactive: false,
@@ -1244,9 +1244,9 @@ const TorrentName = class TorrentName extends PopupMenu.PopupBaseMenuItem {
         this.box.add(start_stop_btn.actor);
         this.box.add(remove_btn.actor);
     }
-};
+}
 
-const TorrentsControls = class TorrentsControls extends PopupMenu.PopupBaseMenuItem {
+class TorrentsControls extends PopupMenu.PopupBaseMenuItem {
     constructor() {
         super({ reactive: false, style_class: 'torrents-controls', });
         this.actor.hide();
@@ -1330,9 +1330,9 @@ const TorrentsControls = class TorrentsControls extends PopupMenu.PopupBaseMenuI
         });
         this.actor.hide();
     }
-};
+}
 
-const TorrentsTopControls = class TorrentsTopControls extends TorrentsControls {
+class TorrentsTopControls extends TorrentsControls {
     constructor() {
         super({ reactive: false, });
 
@@ -1400,9 +1400,9 @@ const TorrentsTopControls = class TorrentsTopControls extends TorrentsControls {
             this.add_entry.add_style_pseudo_class('error');
         }
     }
-};
+}
 
-const TorrentsBottomControls = class TorrentsBottomControls extends TorrentsControls {
+class TorrentsBottomControls extends TorrentsControls {
     constructor() {
         super({ reactive: false, });
 
@@ -1446,10 +1446,10 @@ const TorrentsBottomControls = class TorrentsBottomControls extends TorrentsCont
             indicator.changeTorrentClass();
         }
     }
-};
+}
 
 
-const ControlButton = class ControlButton {
+class ControlButton {
     constructor(icon, info, callback, type) {
         let icon_size = 20;
         let padding = 8;
@@ -1487,7 +1487,7 @@ const ControlButton = class ControlButton {
             this.icon.gicon = getCustomIcon(this.icon.icon_name);
         }
     }
-};
+}
 
 const TorrentsFilter = class TorrentFilter extends PopupMenu.PopupMenuItem {
     constructor(state_id) {
@@ -1501,7 +1501,7 @@ const TorrentsFilter = class TorrentFilter extends PopupMenu.PopupMenuItem {
     }
 };
 
-const TorrentsFilters = class TorrentsFilters extends PopupMenu.PopupSubMenuMenuItem {
+class TorrentsFilters extends PopupMenu.PopupSubMenuMenuItem {
     constructor() {
         super(StatusFilterLabels[gsettings.get_int(TDAEMON_LATEST_FILTER)]);
         this.state_id = gsettings.get_int(TDAEMON_LATEST_FILTER);
@@ -1577,9 +1577,9 @@ const TorrentsFilters = class TorrentsFilters extends PopupMenu.PopupSubMenuMenu
     show() {
         this.actor.show();
     }
-};
+}
 
-const TorrentsMenu = class TorrentsMenu extends PopupMenu.PopupMenu {
+class TorrentsMenu extends PopupMenu.PopupMenu {
     constructor(sourceActor) {
         super(sourceActor, 0.0, St.Side.TOP);
 
@@ -1633,7 +1633,7 @@ const TorrentsMenu = class TorrentsMenu extends PopupMenu.PopupMenu {
         super.close(animate);
         this.controls.hideAddEntry();
     }
-};
+}
 
 function init(extensionMeta) {
     gsettings = Lib.getSettings(Me);
