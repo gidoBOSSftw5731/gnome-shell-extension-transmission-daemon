@@ -481,13 +481,15 @@ var TransmissionDaemonIndicatorClass = GObject.registerClass({
     }
 
     hide() {
-        if (!this._always_show) {
+        if (!this._always_show && this.visible) {
             this.visible = false;
         }
     }
 
     show() {
-        this.visible = true;
+        if (!this.visible) {
+            this.visible = true;
+        }
     }
 
     updateOptions() {
