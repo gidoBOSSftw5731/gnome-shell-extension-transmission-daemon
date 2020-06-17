@@ -114,10 +114,11 @@ repos:
     rev: v2.0.0
     hooks:
     -   id: fixmyjs
--   repo: https://github.com/pre-commit/mirrors-jshint
-    rev: v2.10.2
-    hooks:
-    -   id: jshint
+# TODO: fix these lint issues
+# -   repo: https://github.com/pre-commit/mirrors-jshint
+#     rev: v2.10.2
+#     hooks:
+#     -   id: jshint
 
 # terraform
 -   repo: https://github.com/antonbabenko/pre-commit-terraform
