@@ -74,42 +74,34 @@ function init() {
 }
 
 function buildPrefsWidget() {
-    let vbox = new Gtk.Box({
+    let frame = new Gtk.Box({
         orientation: Gtk.Orientation.VERTICAL,
-        margin: 20,
-        margin_top: 10,
+        "margin-start": 20,
+        "margin-end": 20,
+        "margin-top": 10,
+        spacing: 5,
     });
 
     for (let setting in settings) {
-        let hbox;
+        let setting_element;
         if (settings[setting].type === 's') {
-            hbox = createStringSetting(setting);
+            setting_element = getStringSetting(setting);
         } else if (settings[setting].type === 'i') {
-            hbox = createIntSetting(setting);
+            setting_element = getIntSetting(setting);
         } else if (settings[setting].type === 'b') {
-            hbox = createBoolSetting(setting);
+            setting_element = getBoolSetting(setting);
         } else {
             log(`Unknown type ${settings[setting].type} for setting ${setting}`);
         }
 
-        vbox.add(hbox);
+        let hbox = createSetting(setting, setting_element);
+        frame.append(hbox);
     }
 
-    let frame = new Gtk.Box({
-        orientation: Gtk.Orientation.VERTICAL,
-        border_width: 10,
-    });
-    frame.add(vbox);
-    frame.show_all();
     return frame;
 }
 
-function createStringSetting(setting) {
-    let setting_label = new Gtk.Label({
-        label: settings[setting].label,
-        xalign: 0,
-    });
-
+function getStringSetting(setting) {
     let setting_string = new Gtk.Entry({
         text: gsettings.get_string(setting.replace('_', '-')),
     });
@@ -121,26 +113,10 @@ function createStringSetting(setting) {
         setting_string.set_visibility(false);
     }
 
-    if (settings[setting].help) {
-        setting_label.set_tooltip_text(settings[setting].help);
-        setting_string.set_tooltip_text(settings[setting].help);
-    }
-
-    let hbox = new Gtk.Box({
-        orientation: Gtk.Orientation.HORIZONTAL,
-        margin_top: 5,
-    });
-    hbox.pack_start(setting_label, true, true, 0);
-    hbox.add(setting_string);
-    return hbox;
+    return setting_string;
 }
 
-function createIntSetting(setting) {
-    let setting_label = new Gtk.Label({
-        label: settings[setting].label,
-        xalign: 0,
-    });
-
+function getIntSetting(setting) {
     let setting_int = new Gtk.SpinButton({
         adjustment: new Gtk.Adjustment({
             lower: 1,
@@ -154,43 +130,37 @@ function createIntSetting(setting) {
         gsettings.set_int(setting.replace('_', '-'), entry.value);
     });
 
-    if (settings[setting].help) {
-        setting_label.set_tooltip_text(settings[setting].help);
-        setting_int.set_tooltip_text(settings[setting].help);
-    }
-
-    let hbox = new Gtk.Box({
-        orientation: Gtk.Orientation.HORIZONTAL,
-        margin_top: 5,
-    });
-    hbox.pack_start(setting_label, true, true, 0);
-    hbox.add(setting_int);
-    return hbox;
+    return setting_int;
 }
 
-function createBoolSetting(setting) {
-    let setting_label = new Gtk.Label({
-        label: settings[setting].label,
-        xalign: 0,
-    });
-
+function getBoolSetting(setting) {
     let setting_switch = new Gtk.Switch({
+        halign: Gtk.Align.END,
         active: gsettings.get_boolean(setting.replace('_', '-')),
     });
     setting_switch.connect('notify::active', function(button) {
         gsettings.set_boolean(setting.replace('_', '-'), button.active);
     });
 
+    return setting_switch;
+}
+
+function createSetting(setting, setting_element) {
+    let setting_label = new Gtk.Label({
+        label: settings[setting].label,
+        xalign: 0,
+    });
+
     if (settings[setting].help) {
         setting_label.set_tooltip_text(settings[setting].help);
-        setting_switch.set_tooltip_text(settings[setting].help);
+        setting_element.set_tooltip_text(settings[setting].help);
     }
 
     let hbox = new Gtk.Box({
-        orientation: Gtk.Orientation.HORIZONTAL,
-        margin_top: 5,
+        homogeneous: true,
+        spacing: 20,
     });
-    hbox.pack_start(setting_label, true, true, 0);
-    hbox.add(setting_switch);
+    hbox.prepend(setting_label);
+    hbox.append(setting_element);
     return hbox;
 }
