@@ -38,6 +38,11 @@ function init() {
             help: _('Default is 9091'),
             type: 'i',
         },
+        url: {
+            label: _('RPC URL'),
+            help: _('Default is /transmission/'),
+            type: 's',
+        },
         ssl: {
             label: _('Use SSL?'),
             type: 'b',
