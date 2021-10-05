@@ -450,7 +450,7 @@ var TransmissionDaemonIndicatorClass = GObject.registerClass({
         this._status = new St.Label({ text: '', });
         this._statusBin = new St.Bin({
             child: this._status,
-            y_align: St.Align.MIDDLE,
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._indicatorBox.add(this._icon);
@@ -1060,13 +1060,13 @@ class TransmissionTorrent extends PopupMenu.PopupMenuSection {
         let downloadBorderColor = themeNode.get_color('-download-border-color');
         let idleColor = themeNode.get_color('-idle-color');
         let idleBorderColor = themeNode.get_color('-idle-border-color');
-        let padding = 27;
+        let padding = 50;
 
         this._progress_bar.set_height(barHeight);
         let [width, height] = this._progress_bar.get_surface_size();
         let cr = this._progress_bar.get_context();
 
-        width = width - padding;
+        width = width - padding - 22;
 
         let color = barColor;
         let border_color = barBorderColor;
@@ -1277,6 +1277,7 @@ var TorrentsControls = GObject.registerClass({
             text: '',
             x_expand: true,
             x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this.ctrl_box.add(this.ctrl_btns);
