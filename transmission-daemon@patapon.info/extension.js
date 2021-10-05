@@ -833,7 +833,7 @@ var TransmissionTorrentSmall = GObject.registerClass({
         this.box.add(this.infos);
 
         this.add(name_label);
-        this.add(this.box, { span: -1, align: St.Align.END, });
+        this.add(this.box);
 
         this.buildInfo();
     }
