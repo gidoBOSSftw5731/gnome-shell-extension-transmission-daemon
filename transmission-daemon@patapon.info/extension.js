@@ -450,7 +450,7 @@ var TransmissionDaemonIndicatorClass = GObject.registerClass({
         this._status = new St.Label({ text: '', });
         this._statusBin = new St.Bin({
             child: this._status,
-            y_align: St.Align.MIDDLE,
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this._indicatorBox.add(this._icon);
@@ -833,7 +833,7 @@ var TransmissionTorrentSmall = GObject.registerClass({
         this.box.add(this.infos);
 
         this.add(name_label);
-        this.add(this.box, { span: -1, align: St.Align.END, });
+        this.add(this.box);
 
         this.buildInfo();
     }
@@ -1060,13 +1060,13 @@ class TransmissionTorrent extends PopupMenu.PopupMenuSection {
         let downloadBorderColor = themeNode.get_color('-download-border-color');
         let idleColor = themeNode.get_color('-idle-color');
         let idleBorderColor = themeNode.get_color('-idle-border-color');
-        let padding = 27;
+        let padding = 50;
 
         this._progress_bar.set_height(barHeight);
         let [width, height] = this._progress_bar.get_surface_size();
         let cr = this._progress_bar.get_context();
 
-        width = width - padding;
+        width = width - padding - 22;
 
         let color = barColor;
         let border_color = barBorderColor;
@@ -1188,6 +1188,8 @@ var TorrentName = GObject.registerClass({
         this.box = new St.BoxLayout({
             vertical: false,
             style_class: 'torrent-controls',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.END,
         });
 
         let name_label = new St.Label({
@@ -1196,7 +1198,7 @@ var TorrentName = GObject.registerClass({
         });
 
         this.add(name_label);
-        this.add(this.box, { expand: true, x_fill: false, x_align: St.Align.END, });
+        this.add(this.box);
 
         this.updateButtons();
     }
@@ -1257,30 +1259,33 @@ var TorrentsControls = GObject.registerClass({
         this.vbox = new St.BoxLayout({
             vertical: true,
             style_class: 'torrents-controls-vbox',
+            x_expand: true,
         });
 
-        this.ctrl_box = new St.BoxLayout({ vertical: false, });
+        this.ctrl_box = new St.BoxLayout({
+             vertical: false,
+             x_expand: true,
+        });
 
         this.ctrl_btns = new St.BoxLayout({
             vertical: false,
             style_class: 'torrents-controls-btn',
         });
+
         this.ctrl_info = new St.Label({
             style_class: 'torrents-controls-text',
             text: '',
+            x_expand: true,
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.CENTER,
         });
 
         this.ctrl_box.add(this.ctrl_btns);
-        this.ctrl_box.add(this.ctrl_info, {
-            expand: true,
-            x_fill: false,
-            y_fill: false,
-            x_align: St.Align.END,
-        });
+        this.ctrl_box.add(this.ctrl_info);
 
-        this.vbox.add(this.ctrl_box, { expand: true, span: -1, });
+        this.vbox.add(this.ctrl_box);
 
-        this.add(this.vbox, { expand: true, span: -1, });
+        this.add(this.vbox);
     }
 
     setInfo(text) {
@@ -1341,23 +1346,25 @@ var TorrentsTopControls = GObject.registerClass({
         this.add_box = new St.BoxLayout({
             vertical: false,
             style_class: 'torrents-add',
+            x_expand: true,
         });
         this.add_box_btn = false;
         this.add_entry = new St.Entry({
             style_class: 'add-entry',
             hint_text: _("Torrent URL or Magnet link"),
             can_focus: true,
+            x_expand: true,
         });
         this.add_btn = new ControlButton("object-select", "",
                                          this.torrentAdd.bind(this));
         this.add_box.hide();
 
-        this.add_box.add(this.add_entry, { expand: true, });
+        this.add_box.add(this.add_entry);
         this.add_box.add(this.add_btn.actor);
 
         this.ctrl_info.text = _("Connecting...");
 
-        this.vbox.add(this.add_box, { expand: true, span: -1, });
+        this.vbox.add(this.add_box);
     }
 
     toggleAddEntry(button) {
